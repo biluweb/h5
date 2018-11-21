@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <style>
+            *{margin:0;padding:0;}
+            ul{list-style:none;}
+            body{background:#000;overflow:hidden;}
+            html,body{height:100%;}
+            #amd{text-align:center;color:#fff;font-size:25px;
+                position:relative;-webkit-transform-style:preserve-3d;
+                margin:100px auto;width:200px;height:200px;
+                line-height:200px;
+                -webkit-animation:run 5s linear infinite ;
+            }
+            #amd li{position:absolute;top:0;left:0;width:200px;height:200px;border-radius:50%;}
+            
+            #amd li:nth-child(1){
+                background:rgba(255,0,0,1) url('image/1.jpg') center no-repeat;-webkit-transform:rotateX(90deg) translateZ(100px);background-size:cover;
+            }
+            #amd li:nth-child(2){
+                background:rgba(0,255,255,1) url('image/2.jpg') center no-repeat;-webkit-transform:rotateX(270deg)  translateZ(100px);
+                background-size:cover;
+            }
+            #amd li:nth-child(3){
+                background:rgba(255,0,255,1) url('image/3.jpg') center no-repeat;-webkit-transform:rotateY(90deg)  translateZ(100px);
+                background-size:cover;
+            }
+            #amd li:nth-child(4){
+                background:rgba(0,255,0,1) url('image/4.jpg') center no-repeat;-webkit-transform:rotateY(270deg)  translateZ(100px);
+                background-size:cover;
+            }
+            #amd li:nth-child(5){
+                background:rgba(200,200,0,1) url('image/5.jpg') center no-repeat;-webkit-transform:translateZ(-100px);
+                background-size:cover;
+            }
+            #amd li:nth-child(6){width:100px;height:100px;top:50px;left:50px;background:red;line-height:100px;background:rgba(255,0,0,1) url('image/7.jpg') center no-repeat;background-size:cover;
+            z-index:-1;
+            }
+            #amd li:last-child{
+                background:rgba(0,0,255,1) url('image/6.jpg') center no-repeat;-webkit-transform:translateZ(100px);
+                background-size:cover;
+            }
+
+            #amd.current li:nth-child(1){
+                -webkit-transform:rotateX(90deg) translateZ(150px);
+            }
+            #amd.current li:nth-child(2){
+                -webkit-transform:rotateX(270deg) translateZ(150px);
+            }
+            #amd.current li:nth-child(3){
+                -webkit-transform:rotateX(90deg) translateZ(150px);
+            }
+            #amd.current li:nth-child(4){
+                -webkit-transform:rotateX(270deg) translateZ(150px);
+            }
+            #amd.current li:nth-child(5){-webkit-transform:translateZ(-150px);}
+            #amd.current li:last-child{-webkit-transform:translateZ(150px);}
+            /* @-webkit-keyframes run{
+                0%{-webkit-transform: rotateX(0deg) rotateY(0deg)}
+                100%{-webkit-transform: rotateX(360deg)  rotateY(360deg)}
+            } */
+            
+            .button{width:200px;margin:20px auto;position:relative;}
+            input{width:50px;height:30px;position:absolute;cursor:pointer;}
+            input:nth-child(1){left:100px;top:0;}
+            input:nth-child(2){left:200px;top:50px;}
+            input:nth-child(3){left:0px;top:50px;}
+            input:nth-child(4){left:100px;top:100px;}
+            input:nth-child(5){left:100px;top:50px;}
+        </style>
+        <script>
+        window.onload=function(){
+            var vb={
+                amd:document.getElementById('amd'),
+                i:0,
+                bd:document.getElementsByTagName('body'),
+                fg:true,
+                btn:document.getElementsByClassName('button')[0],
+            }
+            var fn={
+                a:function(){vb.amd.style.backgroundColor='yellowgreen'},
+                b:function(){
+                    vb.amd.onclick=function(){
+                       if(vb.fg){
+                        vb.fg=false;
+                        vb.amd.className='current'
+                        }else{
+                            vb.fg=true;
+                            vb.amd.className=''
+                        } 
+                    }
+                },
+                c:function(){
+                    var amd=vb.bd[0].children[0];
+                    amd.hidden=true;
+                    vb.btn.hidden=true;
+                    vb.bd[0].onclick=function(){
+                        this.bgColor='#000'
+                        amd.hidden=false;
+                        vb.btn.hidden=false;
+                    }
+                   //amd.innerText='点我'
+                },
+                d:function(){
+                  
+                }
+            }
+            console.log(vb.bd);
+            //fn.a();
+            fn.b();
+            fn.c();
+            console.log(vb.bd[0].children[0]);
+            console.log(vb.btn);
+
+
+             var ul=document.getElementById('amd');
+                var inputs=document.getElementsByTagName('input');
+                var x=0,y=0;
+                /////////////////////////鼠标控制
+                for(var i=0;i<inputs.length;i++){
+                    inputs[i].onclick=run;
+                }
+                function run(){
+                    ul.style.webkitTransition='-webkit-transform 5s linear';  //设置立方体变换的属性、持续时间、动画类型
+                    if(inputs[0]==this){x+=90;}
+                    if(inputs[1]==this){y+=90;}
+                    if(inputs[2]==this){y-=90;}
+                    if(inputs[3]==this){x-=90;}
+                    if(inputs[4]==this){x=0;y=0; ul.style.webkitTransition='-webkit-transform 0.1s linear';}    //当点击重置按钮时，迅速转回到初始状态。
+                    ul.style.webkitTransform = "rotateX("+x+"deg) rotateY("+y+"deg)";    //变换效果（沿X轴和Y轴旋转）
+                } 
+
+                 ////////////////////////键盘控制    
+                document.addEventListener('keydown', function(e){
+                    ul.style.webkitTransition='-webkit-transform 5s linear';
+                    switch(e.keyCode){
+                        case 37:    y -= 90;    //左箭头
+                                    break;
+                        case 38:    x += 90;    //上箭头
+                                    break;
+                        case 39:    y += 90;    //下箭头
+                                    break;
+                        case 40:    x -= 90;    //右箭头
+                                    break;
+                        case 13:    x=0; y=0;    //回车 （当回车时，迅速转回初始状态）
+                                    ul.style.webkitTransition='-webkit-transform 0.1s linear';
+                                    break;
+                    }
+                    ul.style.webkitTransform = "rotateX("+x+"deg) rotateY("+y+"deg)"; //变换效果（沿X轴和Y轴旋转）
+                }, false);
+           
+        }
+</script>
+    </head>
+    <body>
+    	<ul id="amd">
+    		<li>天</li>
+            <li>下</li>
+            <li>武</li>
+            <li>功</li>
+            <li>唯</li>
+            <li>宝</li>
+            <li>快</li>
+    	</ul>
+        <div class="button">
+            <input type="button" value="上">
+            <input type="button" value="右">
+            <input type="button" value="左">
+            <input type="button" value="下">
+            <input type="button" value="重置">
+        </div>
+    </body>
+</html>
